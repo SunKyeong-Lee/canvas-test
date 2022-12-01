@@ -1,0 +1,9 @@
+.App {
+  text-align: center;
+}
+
+.canvas-wrap {
+  width: 80%;
+  height: 100px;
+  background-color: lightgray;
+}
