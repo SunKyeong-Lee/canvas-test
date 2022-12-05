@@ -7,12 +7,26 @@
  */
 
 import { fabric } from "fabric";
+import { useEffect } from "react";
 import { useState } from "react";
 
 const CanvasBox = () => {
   // fabric을 저장하고 액세스할 상태 변수
   const [canvas, setCanvas] = useState("");
 
+  // fabric을 반환하는 함수
+  const initCanvas = () =>
+    new fabric.Canvas("canvas", {
+      height: 800,
+      width: 600,
+      backgroundColor: "#c8c8c8",
+    });
+
+  // DOM 초기 렌더링 시 함수 호출
+  useEffect(() => {
+    setCanvas(initCanvas());
+    console.log(canvas);
+  }, []);
 
   // 이미지 업로드
   const handleImage = (e) => {
@@ -23,44 +37,45 @@ const CanvasBox = () => {
     // FileList 안의 File 객체에는 파일 데이터 자체가 숨어있음
     // 이 숨어있는 데이터를 읽기 위해 FileReader API를 사용
     const reader = new FileReader();
-    
-    // * 파일을 읽을 때 FileReader가 즉시 파일을 읽는 게 아니기 때문에 
-    //   onload 이벤트 핸들러를 붙여서 콜백으로 파일을 다 읽었다는 것을 알려줘야함
-    reader.onload = () => {
-      // fabric을 반환하는 기본 형태 > new fabric.Canvas("elementId", { style })
-      // canvas에 이미지 불러오기 > fabric.image.fromURL()
-      // reader.result > result : 파일의 내용을 반환 (FileReader API)
-      new fabric.Image.fromURL(reader.result, (image) => {
-				image.scale(0.75);
-				canvas.add(image); // 수정
-				canvas.renderAll();
-      });
-    };
-
-    // readAsDataURL()
-    // : Blob이나 File에서 데이터를 읽어 Base64 Encode 문자열로 반환 (FileReader API)
+    // readAsDataURL() : blob 타입의 file 데이터를 url 형태로 만듬
     reader.readAsDataURL(file);
+
+    // 파일을 읽을 때 FileReader가 즉시 파일을 읽는 게 아니기 때문에
+    // onload 이벤트 핸들러를 붙여서 콜백으로 파일을 다 읽었다는 것을 알려줘야함
+    reader.onload = () => {
+      const imgElement = document.createElement("img");
+      imgElement.src = reader.result;
+      imgElement.onload = () => {
+        const imageinstance = new fabric.Image(imgElement, {
+          angle: 0,
+          opacity: 1,
+          cornerSize: 30,
+        });
+        canvas.add(imageinstance);
+        canvas.centerObject(imageinstance);
+      };
+
+      // fabric.image.fromURL() > canvas에 이미지 불러오기
+      // reader.result > result : 파일의 내용을 반환 (FileReader API)
+      //  new fabric.Image.fromURL(reader.result, (image) => {
+      //    image.scale(0.75);
+      //    canvas.add(image);
+      //    canvas.renderAll();
+      //  });
+    };
   };
 
   return (
     <div>
       <h1>캔버스테스트</h1>
-      <div>
-        <div className="canvas-wrap">
-          <canvas id="editImg" />
-        </div>
-        <div className="button-wrap">
-          {/* input태그에 accept 옵션을 통해 확장자 제한 가능 */}
-          <input
-            type="file"
-            accept=".jpeg, .jpg, .png"
-            onChange={handleImage}
-          />
-          <button>선택한 이미지 삭제</button>
-          <button>이미지 모두 삭제</button>
-          <button>텍스트</button>
-        </div>
-      </div>
+      {/* input태그에 accept 옵션을 통해 확장자 제한 가능 */}
+      <input
+        id="filereader"
+        type="file"
+        accept="image/*"
+        onChange={handleImage}
+      />
+      <canvas id="canvas" />
     </div>
   );
 };
