@@ -5,8 +5,7 @@ import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "@mui/material/Button";
 import EditShirt from "../components/EditShirt";
 
-// 상품리스트 로딩 중에 보일 화면 필요
-// 상품 상세 페이지 상품 이미지 로딩 중에 보일 화면 필요
+// 상품리스트, 상품상세 페이지 로딩 중에 보일 화면 필요 (로딩스피너)
 
 const ProductDetail = () => {
   const { id } = useParams(); // id : productlist {id}

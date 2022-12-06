@@ -1,8 +1,10 @@
 import Button from "@mui/material/Button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { fabric } from "fabric";
 
 const EditShirt = (props) => {
   const { productList, img, setImg } = props;
+  const [canvas, setCanvas] = useState("");
 
   useEffect(() => {
     if (productList != null) {
@@ -10,7 +12,34 @@ const EditShirt = (props) => {
     }
   }, [productList]);
 
-  /** 상품이미지 티셔츠 앞/뒤 전환 */
+  useEffect(() => {
+    setCanvas(initCanvas());
+  }, []);
+
+  const filterCategory = (category) => {
+    switch(category) {
+      case "short":
+        return (
+          <img 
+            className="product-img" 
+            src={require(`../img/shirts-img/short/${img}`)} 
+          />
+        );
+      case "long":
+        return (
+          <img 
+            className="product-img" 
+            src={require(`../img/shirts-img/long/${img}`)} 
+          />
+        );
+      default:
+        return (
+          <div>이미지가 존재하지 않습니다</div>
+        );
+    }
+  }
+
+  /** 티셔츠 상품이미지 앞,뒤 전환 */
   const flipShirts = () => {
     for (let i = 0; i < productList.productImg.length; i++) {
       if (img == productList.productImg[i] && i % 2 == 0) {
@@ -21,10 +50,15 @@ const EditShirt = (props) => {
     }
   };
 
-  /** 상품이미지 캔버스 */
+  /** 사용자 이미지가 들어갈 캔버스 */
+  const initCanvas = () => (
+    new fabric.Canvas("productImg", {
+      backgroundColor: "gray"
+    })
+  );
 
   return (
-    <div className="edit-img-container" style={{display: "flex"}}>
+    <div style={{display: "flex"}}>
       <div className="product-button">
         <Button
           variant="contained"
@@ -41,27 +75,10 @@ const EditShirt = (props) => {
         <Button variant="contained" color="success">이미지 편집</Button>
       </div>
       <div className="product-detail">
-        {productList?.category == "short" && img != null ? (
-          <div className="img-box">
-            <img
-              className="product-img"
-              src={require(`../img/shirts-img/short/${img}`)}
-            ></img>
-          </div>
-        ) : (
-          // 로딩 중 보일 화면
-          <div style={{width: "310px", height: "371px", backgroundColor: "grey", margin: "20px"}}>로딩 중</div>
-          )}
-        {productList?.category == "long" && img != null ? (
-          <div className="img-box">
-            <img
-              className="product-img"
-              src={require(`../img/shirts-img/long/${img}`)}
-            ></img>
-          </div>
-        ) : (
-          ""
-        )}
+        {
+          img != null &&
+          <div className="img-box">{filterCategory(productList?.category)}</div>
+        }
       </div>
     </div>
   );

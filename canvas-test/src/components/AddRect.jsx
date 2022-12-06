@@ -13,6 +13,7 @@
  */
 
 import { fabric } from "fabric";
+import styled from "styled-components";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -20,18 +21,13 @@ const Test = () => {
   // fabric을 저장하고 액세스할 상태 변수
   const [canvas, setCanvas] = useState("");
 
-  useEffect(() => {
-    setCanvas(initCanvas());
-  }, []);
+  // useEffect(() => {
+  //   setCanvas(initCanvas());
+  // }, []);
 
-  const initCanvas = () =>
-    new fabric.Canvas("canvas", {
-      left: 50,
-      top: 70,
-      height: 800,
-      width: 800,
-      backgroundColor: "#c8c8c8",
-    });
+  // const initCanvas = () =>
+  //   new fabric.Canvas("canvas", {
+  //   });
 
   const addRect = (canvi) => {
     const rect = new fabric.Rect({
@@ -51,13 +47,32 @@ const Test = () => {
   return (
     <div>
       <h1>캔버스테스트</h1>
-      <button onClick={() => addRect(canvas)}>Rectangle</button>
-
-      <br />
-      <br />
-      <canvas id="canvas" />
+      <Wrap>
+        <div>
+          <Button onClick={() => addRect(canvas)}>사각형</Button>
+        </div>
+        <ProductImg>
+          <canvas id="canvas" />
+        </ProductImg>
+      </Wrap>
     </div>
   );
 };
 
 export default Test;
+
+// styled-component
+const Wrap = styled.div`
+  display: flex;
+  gap: 50px;
+  margin: 50px;
+`;
+
+const Button = styled.button`
+  padding: 1.5rem;
+`
+const ProductImg = styled.div`
+  width: 600px;
+  height: 600px;
+  background-image: url("..img/shirts-img/short/short-relax-beige-front.jpg");
+`

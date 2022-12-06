@@ -25,7 +25,6 @@ const CanvasBox = () => {
   // DOM 초기 렌더링 시 함수 호출
   useEffect(() => {
     setCanvas(initCanvas());
-    console.log(canvas);
   }, []);
 
   // 이미지 업로드
