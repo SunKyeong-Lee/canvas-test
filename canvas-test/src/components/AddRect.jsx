@@ -21,26 +21,27 @@ const Test = () => {
   // fabric을 저장하고 액세스할 상태 변수
   const [canvas, setCanvas] = useState("");
 
-  // useEffect(() => {
-  //   setCanvas(initCanvas());
-  // }, []);
+  useEffect(() => {
+    setCanvas(initCanvas());
+  }, []);
 
-  // const initCanvas = () =>
-  //   new fabric.Canvas("canvas", {
-  //   });
+  const initCanvas = () =>
+    new fabric.Canvas("canvas", {
+      backgroundColor: "lightgray",
+      width: 600,
+      height: 600,
+    });
 
   const addRect = (canvi) => {
     const rect = new fabric.Rect({
       width: 300,
       height: 300,
-      left: 50,
-      top: 70,
       fill: "yellow",
-      objectCaching: false,
     });
 
+    canvas.centerObject(rect);
     canvi.add(rect);
-    // canvi.setActiveObject(rect);
+    canvi.setActiveObject(rect);
     canvi.renderAll();
   };
 
@@ -51,9 +52,9 @@ const Test = () => {
         <div>
           <Button onClick={() => addRect(canvas)}>사각형</Button>
         </div>
-        <ProductImg>
+        <div>
           <canvas id="canvas" />
-        </ProductImg>
+        </div>
       </Wrap>
     </div>
   );
@@ -70,9 +71,4 @@ const Wrap = styled.div`
 
 const Button = styled.button`
   padding: 1.5rem;
-`
-const ProductImg = styled.div`
-  width: 600px;
-  height: 600px;
-  background-image: url("..img/shirts-img/short/short-relax-beige-front.jpg");
-`
+`;

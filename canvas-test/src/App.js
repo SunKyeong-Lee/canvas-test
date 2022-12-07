@@ -1,15 +1,15 @@
 import "./App.css";
 import AddRect from "./components/AddRect";
-import CanvasBox from "./components/CanvasBox";
+import ShirtTest from "./components/ShirtTest";
 
 function App() {
   return (
     <div className="App">
       {/*
-      <CanvasBox />
       <Test />
+      <AddRect />
     */}
-    <AddRect />
+      <ShirtTest />
     </div>
   );
 }
