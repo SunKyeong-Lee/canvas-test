@@ -76,9 +76,10 @@ const EditShirt = (props) => {
       </div>
       <div className="product-detail">
         {
-          img != null &&
-          <div className="img-box">{filterCategory(productList?.category)}</div>
+          img != null ?
+          filterCategory(productList?.category) : (<div>로딩 중</div>)
         }
+        
       </div>
     </div>
   );

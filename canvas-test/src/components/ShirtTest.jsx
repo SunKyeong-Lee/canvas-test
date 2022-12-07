@@ -104,10 +104,12 @@ const ShirtTest = () => {
 
 export default ShirtTest;
 
+
 // styled-component
 // 라이브러리 설치 후 사용 : npm i styled-components
 const EditWrap = styled.div`
   display: flex;
+  
   margin: 20px;
   gap: 50px;
 `;
